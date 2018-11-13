@@ -16,6 +16,8 @@ public class Main {
 			System.exit(0);
 		}
 		Maze maze = proccessor.createMaze();
+		
+		maze.findNodes();
 		System.out.println("\n==========");
 		System.out.println(maze.toString());
 		

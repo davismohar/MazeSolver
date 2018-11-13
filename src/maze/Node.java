@@ -114,4 +114,8 @@ public class Node {
 		return(this.getX() == node.getX() && this.getY() == node.getY());
 	}
 	
+	public String toString() {
+		return new String("[" + (this.getX()) + ", " + (this.getY())+"]");
+	}
+	
 }
