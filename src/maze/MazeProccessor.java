@@ -4,7 +4,11 @@ import java.io.File;
 import java.io.FileNotFoundException;
 
 import javax.imageio.ImageIO;
-
+/**
+ * This is in charge of loading the image and transforming it into a maze object
+ * 
+ *
+ */
 public class MazeProccessor {
 	
 	private BufferedImage img = null;
@@ -29,13 +33,16 @@ public class MazeProccessor {
 		for (int i = 0; i < img.getWidth(); i++) {
 			for (int j = 0; j < img.getHeight(); j++) {
 				int color = img.getRGB(i, j);
-				System.out.println(color);
+				
 				int  blue  =  color & 0x000000ff;
+				System.out.println(blue);
 				if (blue == 0) {
 					maze.addWall(i, j);
+					System.out.print("Black");
 				}
 				else if (blue == 255) {
 					maze.addPath(i, j);
+					System.out.print("White");
 				}
 				
 			}

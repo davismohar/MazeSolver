@@ -1,4 +1,7 @@
 package maze;
+
+import java.util.ArrayList;
+
 /**
  * The maze class
  * The entrance must be at the top and the exit must be at the bottom of the maze
@@ -10,11 +13,13 @@ public class Maze {
 	private byte[][] maze;
 	private int height;
 	private int width;
+	private ArrayList<Node> nodes;
 
 	public Maze(int width, int height) {
 		maze = new byte[width][height];
 		this.width = width;
 		this.height = height;
+		nodes = new ArrayList<Node>();
 	}
 	
 	public int getHeight() {
@@ -34,6 +39,11 @@ public class Maze {
 		// finds the entrance at the top of the screen.(should be the only white
 		// space)
 		Node entrance = null;
+		for (int i = 0; i < this.width; i++) {
+			if (getPoint(i, 0) == 0) {
+				entrance = new Node(i, 0);
+			}
+		}
 		return entrance;
 	}
 
@@ -41,16 +51,39 @@ public class Maze {
 		// finds the exit at the bottom of the screen. (should be the only white
 		// spot in the final row})
 		Node exit = null;
+		for (int i = 0; i < this.width; i++) {
+			if (getPoint(i, this.height - 1) == 0) {
+				exit = new Node(i, this.height - 1);
+			}
+		}
 		return exit;
 	}
 
-	private void findIntersections() {
-		// scans row by row to find all the intersections
+	private void findNodes() {
+		for (int i = 0; i < this.getWidth(); i++) { // x iteration
+			for (int j = 1; j < this.getHeight() - 1; j++) { //y iteration 
+				//Don't need to check the top or bottom rows because we have already found the entrance and exits
+				if (this.getPoint(i,j) == 0) {
+					if (i == 0) { //if on left edge of maze
+						if (this.getPoint(i + 1, j) == 0) { //if there is a path at this point
+							if (this.getPoint(i, j + 1) == 0 || this.getPoint(i, j - 1) == 0) { //if there is path above or below
+								nodes.add(new Node(i,j));
+							}
+							
+						}
+					}
+				}
+				
+				
+			}
+		}
+		
 	}
 
 	public void solve() {
 		//finds exit, entrance, and intersections
-		// prints order of directions to take (up, down, left, right)
+		//prints order of directions to take (up, down, left, right)
+		
 		
 		
 	}
