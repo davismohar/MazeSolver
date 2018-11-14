@@ -22,66 +22,21 @@ public class Node {
 		right = null;
 	}
 	
-	public void findConnections(Maze maze) {
-		findLeft(maze);
-		findRight(maze);
-		findAbove(maze);
-		findBelow(maze);
+	public void addAbove(Node node) {
+		this.above = node;
 	}
 	
-	public Node findAbove(Maze maze) {
-		Node node = null;
-		int currY = this.getY();
-		while (currY > 0) {
-			if (maze.getPoint(this.getX(), currY - 1) == 1 && currY != this.getY()) {
-				return new Node(this.getX(), currY);
-			}
-			currY --;
-		}
-		return node;
-		
+	public void addBelow(Node node) {
+		this.below = node;
 	}
 	
-	public Node findBelow(Maze maze) {
-		Node node = null;
-		int currY = this.getY();
-		while (currY < maze.getHeight() - 1) {
-			if (maze.getPoint(this.getX(), currY + 1) == 1 && currY != this.getY()) {
-				return new Node(this.getX(), currY);
-			}
-			currY ++;
-		}
-		return node;
-		
+	public void addLeft(Node node) {
+		this.left = node;
 	}
 	
-	public Node findLeft(Maze maze) {
-		Node node = null;
-		int currX = this.getX();
-		while (currX > 0) {
-			if (maze.getPoint(currX - 1, this.getY()) == 1 && currX != this.getX()) {
-				return new Node(currX, this.getY());
-			}
-			currX --;
-		}
-		return node;
-		
+	public void addRight(Node node) {
+		this.right = node;
 	}
-	
-	public Node findRight(Maze maze) {
-		Node node = null;
-		int currX = this.getY();
-		while (currX < maze.getWidth() - 1) {
-			if (maze.getPoint(currX + 1, this.getY()) == 1 && currX != this.getX()) {
-				return new Node(currX, this.getY());
-			}
-			currX ++;
-		}
-		return node;
-		
-	}
-	
-	
 	
 	public Node getAbove() {
 		return this.above;
@@ -98,6 +53,7 @@ public class Node {
 	public Node getRight() {
 		return this.right;
 	}
+	
 	
 	public int getX() {
 		return this.x;

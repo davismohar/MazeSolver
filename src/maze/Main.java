@@ -20,6 +20,11 @@ public class Main {
 		maze.findNodes();
 		System.out.println("\n==========");
 		System.out.println(maze.toString());
+		maze.solve();
+		Node node = maze.getNodes().get(0);
+		System.out.println(node.getBelow().toString());
+		System.out.println(maze.getNodes().get(5).toString());
+		System.out.print(maze.getNodes().get(5).getRight().toString());
 		
 	}
 }
