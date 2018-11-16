@@ -22,109 +22,58 @@ public class Maze {
 		nodes = new ArrayList<Node>();
 	}
 
-	private void findConnections() {
-		for (int i = 0; i < nodes.size(); i++) {
-			for (int j = i + 1; j < nodes.size(); j++) {
-				if (nodes.get(i).getX() == nodes.get(j).getX()) { // if the two nodes have the same x
-					if (nodes.get(i).getY() > nodes.get(j).getY()) {// check above
-						if (canConnectAbove(nodes.get(i), nodes.get(j))) {
-							nodes.get(i).addAbove(nodes.get(j));
-							nodes.get(j).addBelow(nodes.get(i));
-						}
-					} 
-					else { // check below
-						if (canConnectBelow(nodes.get(i), nodes.get(j))) {
-							nodes.get(i).addBelow(nodes.get(j));
-							nodes.get(j).addAbove(nodes.get(i));
-						}
-					}
-				}
-				if (nodes.get(i).getY() == nodes.get(j).getY()) { // if the two nodes have the same Y
-					if (nodes.get(i).getX() > nodes.get(j).getX()) {// check left
-						if (canConnectLeft(nodes.get(i), nodes.get(j))) { 
-							nodes.get(i).addLeft(nodes.get(j));
-							nodes.get(j).addRight(nodes.get(i));
-						}
-					} 
-					else {// check right
-						if (canConnectRight(nodes.get(i), nodes.get(j))) { 
-							nodes.get(i).addRight(nodes.get(j));
-							nodes.get(j).addLeft(nodes.get(i));
-						}
-					}
-				}
+	public Node findConnectionAbove(Node node) {
+
+		int x = node.getX();
+		for (int y = node.getY() - 1; y >= 0; y--) {
+			if (this.getPoint(x, y) == 1) {
+				return null;
+			}
+			if (this.nodeAt(x, y) != null) {
+				return this.nodeAt(x, y);
 			}
 		}
+		return null;
+
 	}
 
-	public boolean canConnectAbove(Node node1, Node node2) {
-		// if X is the same, check above
-		if (node1.getX() != node2.getX()) {
-			return false;
-		}
-		if (node1.getY() < node2.getY()) {
-			return false;
-		}
-		int node1Y = node1.getY() - 1;
-		while (node1Y > node2.getY()) {
-			if (this.getPoint(node1.getX(), node1Y) == 1) {
-				return false;
+	public Node findConnectionBelow(Node node) {
+		int x = node.getX();
+		for (int y = node.getY() + 1; y < this.getHeight(); y++) {
+			if (this.getPoint(x, y) == 1) {
+				return null;
 			}
-			node1Y--;
+			if (this.nodeAt(x, y) != null) {
+				return this.nodeAt(x, y);
+			}
 		}
-		return true;
+		return null;
 	}
 
-	public boolean canConnectBelow(Node node1, Node node2) {
-		// if X is the same, check below
-		if (node1.getX() != node2.getX()) {
-			return false;
-		}
-		if (node1.getY() > node2.getY()) {
-			return false;
-		}
-		int node1Y = node1.getY() + 1;
-		while (node1Y < node2.getY()) {
-			if (this.getPoint(node1.getX(), node1Y) == 1) {
-				return false;
+	public Node findConnectionLeft(Node node) {
+		int y = node.getY();
+		for (int x = node.getX() - 1; x >= 0; x--) {
+			if (this.getPoint(x, y) == 1) {
+				return null;
 			}
-			node1Y++;
+			if (this.nodeAt(x, y) != null) {
+				return this.nodeAt(x, y);
+			}
 		}
-		return true;
+		return null;
 	}
 
-	public boolean canConnectLeft(Node node1, Node node2) {
-		if (node1.getY() != node2.getY()) {
-			return false;
-		}
-		if (node1.getX() < node2.getX()) {
-			return false;
-		}
-		int node1X = node1.getX() - 1;
-		while (node1X > node2.getX()) {
-			if (this.getPoint(node1X, node1.getY()) == 1) {
-				return false;
+	public Node findConnectionRight(Node node) {
+		int y = node.getY();
+		for (int x = node.getX() + 1; x < this.getWidth(); x++) {
+			if (this.getPoint(x, y) == 1) {
+				return null;
 			}
-			node1X--;
-		}
-		return true;
-	}
-
-	public boolean canConnectRight(Node node1, Node node2) {
-		if (node1.getY() != node2.getY()) {
-			return false;
-		}
-		if (node1.getX() > node2.getX()) {
-			return false;
-		}
-		int node1X = node1.getX() + 1;
-		while (node1X < node2.getX()) {
-			if (this.getPoint(node1X, node1.getY()) == 1) {
-				return false;
+			if (this.nodeAt(x, y) != null) {
+				return this.nodeAt(x, y);
 			}
-			node1X++;
 		}
-		return true;
+		return null;
 	}
 
 	public int getHeight() {
@@ -138,6 +87,18 @@ public class Maze {
 	public byte getPoint(int x, int y) {
 		// returns the value of the byte at x,y in the maze
 		return maze[x][y];
+	}
+
+	public Node nodeAt(int x, int y) {
+		if (getPoint(x, y) == 1) {
+			return null;
+		}
+		for (int i = 0; i < nodes.size(); i++) {
+			if (nodes.get(i).getX() == x && nodes.get(i).getY() == y) {
+				return nodes.get(i);
+			}
+		}
+		return null;
 	}
 
 	private Node findEntrance() {
@@ -165,8 +126,8 @@ public class Maze {
 	}
 
 	public void findNodes() {
-		//TODO: it picks the farthest node in a particular direction instead of the closest
-		//So getRight of (3,1) returns (8,1) instead of (5,1)
+		// TODO: see if this can be recursive
+		// So getRight of (3,1) returns (8,1) instead of (5,1)
 		nodes.add(findEntrance());
 		for (int i = 0; i < this.getWidth(); i++) { // x iteration
 			for (int j = 1; j < this.getHeight() - 1; j++) { // y iteration
@@ -199,11 +160,20 @@ public class Maze {
 		System.out.println(nodes);
 	}
 
+	public void connectNodes() {
+		for (int i = 0; i < nodes.size(); i++) {
+			nodes.get(i).addAbove(this.findConnectionAbove(nodes.get(i)));
+			nodes.get(i).addBelow(this.findConnectionBelow(nodes.get(i)));
+			nodes.get(i).addLeft(this.findConnectionLeft(nodes.get(i)));
+			nodes.get(i).addRight(this.findConnectionRight(nodes.get(i)));
+		}
+	}
+
 	public void solve() {
 		// finds exit, entrance, and intersections
 		// prints order of directions to take (up, down, left, right)
 		System.out.println("Solving");
-		this.findConnections();
+		this.connectNodes();
 		System.out.println("Solved");
 
 	}
