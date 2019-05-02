@@ -12,6 +12,7 @@ public class Node {
 	Node right;
 	int x;
 	int y;
+	boolean hasBeenVisited;
 	
 	public Node(int x, int y){
 		this.x = x;
@@ -20,6 +21,7 @@ public class Node {
 		below = null;
 		left = null;
 		right = null;
+		hasBeenVisited = false;
 	}
 	
 	public void addAbove(Node node) {
@@ -72,6 +74,18 @@ public class Node {
 	
 	public String toString() {
 		return new String("[" + (this.getX()) + ", " + (this.getY())+"]");
+	}
+	
+	public boolean hasBeenVisted() {
+		return hasBeenVisited;
+	}
+	
+	public void visit() {
+		this.hasBeenVisited = true;
+	}
+	
+	public void resetVisit() {
+		this.hasBeenVisited = false;
 	}
 	
 }

@@ -14,12 +14,14 @@ public class Maze {
 	private int height;
 	private int width;
 	private ArrayList<Node> nodes;
+	private ArrayList<Node> solutionList;
 
 	public Maze(int width, int height) {
 		maze = new byte[width][height];
 		this.width = width;
 		this.height = height;
 		nodes = new ArrayList<Node>();
+		solutionList = new ArrayList<Node>();
 	}
 
 	public Node findConnectionAbove(Node node) {
@@ -169,13 +171,49 @@ public class Maze {
 		}
 	}
 
-	public void solve() {
-		// finds exit, entrance, and intersections
-		// prints order of directions to take (up, down, left, right)
-		System.out.println("Solving");
-		this.connectNodes();
-		System.out.println("Solved");
-
+	/**
+	 * This starts at the entrance, and finds a path to the end.
+	 * Adding all nodes on the path to the solvePath arraylist
+	 */
+	public boolean solve(Node currentNode) {
+		currentNode.visit();
+		//checks to see if currentNode is equal to the exit node(the last node in the list of nodes)
+		if (currentNode.equals(nodes.get(nodes.size() - 1))) {
+			solutionList.add(currentNode);
+			return true;
+		}
+		if(currentNode.left != null) {
+			if (solve(currentNode.left) == true) {
+				solutionList.add(currentNode);
+			}
+		}
+		if(currentNode.right != null) {
+			if (solve(currentNode.right) == true) {
+				solutionList.add(currentNode);
+			}
+		}
+		if(currentNode.above != null) {
+			if (solve(currentNode.above) == true) {
+				solutionList.add(currentNode);
+			}
+		}
+		if(currentNode.below != null) {
+			if (solve(currentNode.below) == true) {
+				solutionList.add(currentNode);
+			}
+		}
+		return false;
+	}
+	
+	public void printSolution() {
+		System.out.println("Solution: ");
+		System.out.print(solutionList.toString());
+	}
+	
+	public void clearVisits() {
+		for (int i = 0; i < nodes.size(); i++) {
+			nodes.get(i).resetVisit();
+			}
 	}
 
 	public void addWall(int x, int y) {

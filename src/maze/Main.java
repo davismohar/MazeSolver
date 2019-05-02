@@ -19,11 +19,13 @@ public class Main {
 		Maze maze = proccessor.createMaze();
 
 		maze.findNodes();
-		System.out.println("\n==========");
-		System.out.println(maze.toString());
+		//System.out.println("\n==========");
+		//System.out.println(maze.toString());
 		Node node1 = maze.getNodes().get(0);
-		maze.solve();
-		System.out.println(node1.getBelow());
+		maze.connectNodes();
+		maze.solve(node1);
+		maze.printSolution();
+		/*System.out.println(node1.getBelow());
 		ArrayList<Node> nodes = maze.getNodes();
 		for (int i = 0; i < maze.getNodes().size(); i++) {
 			System.out.println(nodes.get(i));
@@ -32,6 +34,7 @@ public class Main {
 			System.out.println("Left: " + nodes.get(i).getLeft());
 			System.out.println("Right: " + nodes.get(i).getRight() + "\n\n");
 		}
-
+*/
 	}
+	
 }
