@@ -1,6 +1,7 @@
 package maze;
 
 import java.util.ArrayList;
+import java.util.Stack;
 
 /**
  * The maze class The entrance must be at the top and the exit must be at the
@@ -14,14 +15,14 @@ public class Maze {
 	private int height;
 	private int width;
 	private ArrayList<Node> nodes;
-	private ArrayList<Node> solutionList;
+	private Stack<Node> stack;
 
 	public Maze(int width, int height) {
 		maze = new byte[width][height];
 		this.width = width;
 		this.height = height;
 		nodes = new ArrayList<Node>();
-		solutionList = new ArrayList<Node>();
+		stack = new Stack<Node>();
 	}
 
 	public Node findConnectionAbove(Node node) {
@@ -172,48 +173,72 @@ public class Maze {
 	}
 
 	/**
-	 * This starts at the entrance, and finds a path to the end.
-	 * Adding all nodes on the path to the solvePath arraylist
+	 * This starts at the entrance, and finds a path to the end. Adding all nodes on
+	 * the path to the solvePath arraylist
 	 */
-	public boolean solve(Node currentNode) {
+	public void solve(Node currentNode) {
+		if (!stack.contains(currentNode)) {
+			stack.push(currentNode);
+		}
 		currentNode.visit();
-		//checks to see if currentNode is equal to the exit node(the last node in the list of nodes)
+		if(currentNode.equals(nodes.get(nodes.size() - 1))) {
+			System.out.print("Solution: ");
+			System.out.println(stack.toString());
+		}
+		else if(currentNode.hasUnvisitedNeighbors()) {
+			if(currentNode.right != null && !currentNode.right.hasBeenVisited) {
+				stack.push(currentNode.right);
+			}
+			else if(currentNode.left != null && !currentNode.left.hasBeenVisited) {
+				stack.push(currentNode.left);
+			}
+			else if(currentNode.above != null && !currentNode.above.hasBeenVisited) {
+				stack.push(currentNode.above);
+			}
+			else {
+				stack.push(currentNode.below);
+			}
+			solve(stack.peek());
+		}
+		else {
+			stack.pop();
+			solve(stack.peek());
+		}
+		/*
+		solutionList.add(currentNode);
+		System.out.println("Visiting" + currentNode.toString());
+		// checks to see if currentNode is equal to the exit node(the last node in the
+		// list of nodes)
 		if (currentNode.equals(nodes.get(nodes.size() - 1))) {
 			solutionList.add(currentNode);
 			return true;
+		} else if (currentNode.left != null && !currentNode.left.hasBeenVisited) {
+			return solve(currentNode.left);
+
+		} else if (currentNode.right != null && !currentNode.right.hasBeenVisited) {
+			return solve(currentNode.right);
+
+		} else if (currentNode.above != null && !currentNode.above.hasBeenVisited) {
+			return solve(currentNode.above);
+
+		} else if (currentNode.below != null && !currentNode.below.hasBeenVisited) {
+			return solve(currentNode.below);
+
+		} else {
+			return false;
 		}
-		if(currentNode.left != null) {
-			if (solve(currentNode.left) == true) {
-				solutionList.add(currentNode);
-			}
-		}
-		if(currentNode.right != null) {
-			if (solve(currentNode.right) == true) {
-				solutionList.add(currentNode);
-			}
-		}
-		if(currentNode.above != null) {
-			if (solve(currentNode.above) == true) {
-				solutionList.add(currentNode);
-			}
-		}
-		if(currentNode.below != null) {
-			if (solve(currentNode.below) == true) {
-				solutionList.add(currentNode);
-			}
-		}
-		return false;
+		*/
 	}
-	
+
 	public void printSolution() {
 		System.out.println("Solution: ");
-		System.out.print(solutionList.toString());
+		//System.out.print(solutionList.toString());
 	}
-	
+
 	public void clearVisits() {
 		for (int i = 0; i < nodes.size(); i++) {
 			nodes.get(i).resetVisit();
-			}
+		}
 	}
 
 	public void addWall(int x, int y) {

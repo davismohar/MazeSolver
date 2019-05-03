@@ -1,7 +1,6 @@
 package maze;
 
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
 
 public class Main {
 	public static void main(String args[]) {
@@ -21,10 +20,9 @@ public class Main {
 		maze.findNodes();
 		//System.out.println("\n==========");
 		//System.out.println(maze.toString());
-		Node node1 = maze.getNodes().get(0);
+		Node entrance = maze.getNodes().get(0);
 		maze.connectNodes();
-		maze.solve(node1);
-		maze.printSolution();
+		maze.solve(entrance);
 		/*System.out.println(node1.getBelow());
 		ArrayList<Node> nodes = maze.getNodes();
 		for (int i = 0; i < maze.getNodes().size(); i++) {

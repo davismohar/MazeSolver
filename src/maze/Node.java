@@ -88,4 +88,20 @@ public class Node {
 		this.hasBeenVisited = false;
 	}
 	
+	public boolean hasUnvisitedNeighbors() {
+		if(this.above != null && !this.above.hasBeenVisited) {
+			return true;
+		}
+		if(this.below != null && !this.below.hasBeenVisited) {
+			return true;
+		}
+		if(this.right != null && !this.right.hasBeenVisited) {
+			return true;
+		}
+		if(this.left != null && !this.left.hasBeenVisited) {
+			return true;
+		}
+		return false;
+	}
+	
 }
