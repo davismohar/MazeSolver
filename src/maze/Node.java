@@ -2,6 +2,7 @@ package maze;
 /**
  * This can act as a 2d linked list where each node is linked 
  * above, below, left, and right. Then the path from the entrance to the exit can be found
+ * hasBeenVisited is only relevant for solving, as we need to keep track of where we have been.
  * 
  *
  */
@@ -88,6 +89,7 @@ public class Node {
 		this.hasBeenVisited = false;
 	}
 	
+	//if any of the neighbors are still availible
 	public boolean hasUnvisitedNeighbors() {
 		if(this.above != null && !this.above.hasBeenVisited) {
 			return true;
